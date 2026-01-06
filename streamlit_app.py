@@ -27,7 +27,7 @@ except:
         "warehouse" : "COMPUTE_WH",
         "database" : "SMOOTHIES",
         "schema" : "PUBLIC",
-        "client_session_keep_alive" : true
+        "client_session_keep_alive" : "true"
     }
     session = Session.builder.configs(connection_parameters).create()
 
