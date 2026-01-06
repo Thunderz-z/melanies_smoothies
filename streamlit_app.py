@@ -20,14 +20,14 @@ try:
 except:
     # Fallback for GitHub / local execution
     connection_parameters = {
-        account = "BZNJCAL-DLB00315"
-        user = "Avanindraa"
-        password = "Allstargod12**"
-        role = "SYSADMIN"
-        warehouse = "COMPUTE_WH"
-        database = "SMOOTHIES"
-        schema = "PUBLIC"
-        client_session_keep_alive = true
+        "account" : "BZNJCAL-DLB00315"
+        "user" : "Avanindraa"
+        "password" : "Allstargod12**"
+        "role" : "SYSADMIN"
+        "warehouse" : "COMPUTE_WH"
+        "database" : "SMOOTHIES"
+        "schema" : "PUBLIC"
+        "client_session_keep_alive" : true
     }
     session = Session.builder.configs(connection_parameters).create()
 
