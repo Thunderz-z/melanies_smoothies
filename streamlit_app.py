@@ -5,41 +5,36 @@ from snowflake.snowpark import Session
 from snowflake.snowpark.functions import col
 import requests
 
-# Write directly to the app
 st.title("Customize Your Smoothie :balloon:")
 st.write("Choose the fruits you want in your custom smoothie.")
 
 name_on_order = st.text_input("Name on Smoothie:")
 st.write("The name on your Smoothie will be:", name_on_order)
 
-# -----------------------------
-# SESSION HANDLING (FIX)
-# -----------------------------
+# Session handling
 try:
-    # Works ONLY inside Snowflake Streamlit
     session = get_active_session()
 except:
-    # Fallback for GitHub / local execution
-    connection_parameters = {
-        "account" : "BZNJCAL-DLB00315",
-        "user" : "Avanindraa",
-        "password" : "Allstargod12**",
-        "role" : "SYSADMIN",
-        "warehouse" : "COMPUTE_WH",
-        "database" : "SMOOTHIES",
-        "schema" : "PUBLIC",
-        "client_session_keep_alive" : "true"
-    }
-    session = Session.builder.configs(connection_parameters).create()
+    session = Session.builder.configs({
+        "account": "BZNJCAL-DLB00315",
+        "user": "Avanindraa",
+        "password": "Allstargod12**",
+        "role": "SYSADMIN",
+        "warehouse": "COMPUTE_WH",
+        "database": "SMOOTHIES",
+        "schema": "PUBLIC",
+        "client_session_keep_alive": "true"
+    }).create()
 
-# -----------------------------
-# APP LOGIC (UNCHANGED)
-# -----------------------------
-my_dataframe = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME"), col("SEARCH_ON"))
+# Pull fruit name + API-safe name
+fruit_df = session.table("smoothies.public.fruit_options") \
+    .select(col("FRUIT_NAME"), col("SEARCH_ON")) \
+    .to_pandas()
 
+# Multiselect uses GUI names
 ingredients_list = st.multiselect(
     "Choose up to 5 ingredients:",
-    my_dataframe
+    fruit_df["FRUIT_NAME"]
 )
 
 if ingredients_list:
@@ -68,6 +63,3 @@ if ingredients_list:
     if st.button("Submit Order"):
         session.sql(insert_stmt).collect()
         st.success("Your Smoothie is ordered!", icon="✅")
-
-
-
