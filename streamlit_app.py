@@ -43,8 +43,8 @@ if ingredients_list:
     for fruit in ingredients_list:
         ingredients_string += fruit + " "
 
-        search_on=fruit_df.loc[fruit_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
-        st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
+        search_on = fruit_df.loc[fruit_df["FRUIT_NAME"] == fruit_chosen, "SEARCH_ON"].iloc[0]
+        st.write("The search value for", fruit_chosen, "is", search_on, ".")
 
         
         api_name = fruit_df.loc[
